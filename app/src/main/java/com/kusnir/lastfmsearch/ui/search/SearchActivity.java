@@ -78,14 +78,14 @@ public class SearchActivity extends BaseActivity<SearchViewModel, SearchComponen
                 .debounce(Constants.SEARCH_DEBOUNCE_TIME, TimeUnit.SECONDS)
                 .filter(text -> !text.isEmpty())
                 .distinctUntilChanged()
-                .flatMap(keyword -> viewModel
-                        .searchKeyword(keyword)
-                        .subscribeOn(Schedulers.io())
-                )
+                .flatMap(keyword -> viewModel.searchKeyword(keyword))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSuccess, this::onError));
     }
 
+    private void onSuccess(ArtistResults results) {
+        adapter.setItems(results.getResults().getArtistmatches().getArtist());
+    }
     private void onError(Throwable throwable) {
         throwable.printStackTrace();
     }
@@ -109,5 +109,4 @@ public class SearchActivity extends BaseActivity<SearchViewModel, SearchComponen
         disposable.clear();
     }
 
-    private void onSuccess(ArtistResults results) {adapter.setItems(results.getResults().getArtistmatches().getArtist());}
 }

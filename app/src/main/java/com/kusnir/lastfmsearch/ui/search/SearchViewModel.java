@@ -8,6 +8,7 @@ import com.kusnir.lastfmsearch.ui.base.BaseViewModel;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 public class SearchViewModel extends BaseViewModel {
 
@@ -19,7 +20,7 @@ public class SearchViewModel extends BaseViewModel {
     }
 
     public Observable<ArtistResults> searchKeyword(String keyword) {
-        return dataManager.searchArtist(keyword);
+        return dataManager.searchArtist(keyword).subscribeOn(Schedulers.io());
     }
 
 }
