@@ -1,6 +1,5 @@
 package com.kusnir.lastfmsearch.service;
 
-
 import com.kusnir.lastfmsearch.injection.scope.ApplicationScope;
 import com.kusnir.lastfmsearch.models.artist_models.ArtistResults;
 import com.kusnir.lastfmsearch.util.Constants;
@@ -23,7 +22,7 @@ public class DataManagerImpl implements DataManager {
     public Observable<ArtistResults> searchArtist(String artistName) {
         return searchService.getArtists(Constants.ARTIST_METHOD,
                 artistName,
-                Constants.LLIMIT,
+                Constants.LIMIT,
                 Constants.FORMAT,
                 Constants.API_KEY);
     }

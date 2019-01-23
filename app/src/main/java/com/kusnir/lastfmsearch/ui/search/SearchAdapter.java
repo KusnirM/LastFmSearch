@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapterViewHolder> {
 
     private OnItemSelectedListener listener;
-    List<Artist> artistList = new ArrayList<>();
+    private List<Artist> artistList = new ArrayList<>();
 
     public SearchAdapter(OnItemSelectedListener listener) {
         this.listener = listener;

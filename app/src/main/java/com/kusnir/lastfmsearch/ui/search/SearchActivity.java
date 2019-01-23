@@ -1,24 +1,34 @@
 package com.kusnir.lastfmsearch.ui.search;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.disposables.CompositeDisposable;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.SearchView;
 
 import com.kusnir.lastfmsearch.LastFmSearchApp;
 import com.kusnir.lastfmsearch.R;
 import com.kusnir.lastfmsearch.models.artist_models.Artist;
+import com.kusnir.lastfmsearch.models.artist_models.ArtistResults;
+import com.kusnir.lastfmsearch.models.artist_models.Image;
+import com.kusnir.lastfmsearch.ui.artist_detail.ArtistDetailActivity;
 import com.kusnir.lastfmsearch.ui.base.BaseActivity;
+import com.kusnir.lastfmsearch.util.Constants;
 import com.kusnir.lastfmsearch.util.OnItemSelectedListener;
+import com.kusnir.lastfmsearch.util.RxSearchObservable;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class SearchActivity extends BaseActivity<SearchViewModel, SearchComponent> implements OnItemSelectedListener {
 
@@ -63,9 +73,33 @@ public class SearchActivity extends BaseActivity<SearchViewModel, SearchComponen
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        disposable.add(RxSearchObservable.fromView(searchView)
+
+                .debounce(Constants.SEARCH_DEBOUNCE_TIME, TimeUnit.SECONDS)
+                .filter(text -> !text.isEmpty())    
+                .distinctUntilChanged()
+                .flatMap(keyword -> viewModel
+                        .searchKeyword(keyword)
+                        .subscribeOn(Schedulers.io())
+                )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onSuccess, this::onError));
+    }
+
+    private void onError(Throwable throwable) {
+        throwable.printStackTrace();
     }
 
     @Override public void onArtistSelected(Artist artist) {
+        Intent intent = new Intent(this, ArtistDetailActivity.class);
+        intent.putExtra(ArtistDetailActivity.ARTIST_NAME, artist.getName());
+        intent.putExtra(ArtistDetailActivity.ARTIST_URL, artist.getUrl());
+        intent.putExtra(ArtistDetailActivity.ARTIST_LISTENERS, artist.getListeners());
+
+        List<Image> artistImageList = artist.getImage();
+        Image artistImage = artistImageList.get(artistImageList.size() - 1);
+        intent.putExtra(ArtistDetailActivity.ARTIST_IMAGE_URL, artistImage != null ? artistImage.getText() : "");
+        startActivity(intent);
 
     }
 
@@ -74,4 +108,6 @@ public class SearchActivity extends BaseActivity<SearchViewModel, SearchComponen
         super.onDestroy();
         disposable.clear();
     }
+
+    private void onSuccess(ArtistResults results) {adapter.setItems(results.getResults().getArtistmatches().getArtist());}
 }

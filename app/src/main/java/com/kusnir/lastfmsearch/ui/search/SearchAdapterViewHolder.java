@@ -24,7 +24,7 @@ public class SearchAdapterViewHolder extends RecyclerView.ViewHolder {
     ImageView artistImageView;
     @BindView(R.id.artist_name)
     TextView artistNameTextview;
-    Context context;
+    private Context context;
 
     public SearchAdapterViewHolder(@NonNull View itemView) {
         super(itemView);

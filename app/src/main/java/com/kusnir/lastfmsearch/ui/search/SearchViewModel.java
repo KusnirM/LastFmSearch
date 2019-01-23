@@ -18,4 +18,8 @@ public class SearchViewModel extends BaseViewModel {
         this.dataManager = dataManager;
     }
 
+    public Observable<ArtistResults> searchKeyword(String keyword) {
+        return dataManager.searchArtist(keyword);
+    }
+
 }

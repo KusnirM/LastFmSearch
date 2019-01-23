@@ -15,4 +15,15 @@ public class ArtistDetailViewModel extends BaseViewModel {
     public ArtistDetailViewModel() {
     }
 
+    public void loadImage(ImageView artistImageView, String artistImageUrl) {
+        if (artistImageUrl != null && !artistImageUrl.isEmpty()) {
+            Picasso.get()
+                    .load(artistImageUrl)
+                    .error(R.mipmap.ic_launcher_round)
+                    .into(artistImageView);
+        } else {
+            Picasso.get().load(R.mipmap.ic_launcher_round).into(artistImageView);
+        }
+    }
+
 }

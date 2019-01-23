@@ -1,6 +1,5 @@
 package com.kusnir.lastfmsearch.service;
 
-
 import com.kusnir.lastfmsearch.injection.scope.ApplicationScope;
 import com.kusnir.lastfmsearch.models.artist_models.ArtistResults;
 

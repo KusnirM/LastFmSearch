@@ -1,9 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     tools:context=".ui.artist_detail.ArtistDetailActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/artist_imageview"
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+
+    <TextView
+        android:layout_below="@id/artist_imageview"
+        android:id="@+id/artist_name_label"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/artistNameLabel"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/artist_name"
+        android:layout_width="wrap_content"
+        android:layout_alignBaseline="@+id/artist_name_label"
+        android:layout_toEndOf="@+id/artist_name_label"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@id/artist_name_label"
+        android:id="@+id/artist_url_label"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/artistUrlLabel"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/artist_url"
+        android:layout_width="wrap_content"
+        android:layout_alignBaseline="@+id/artist_url_label"
+        android:layout_toEndOf="@+id/artist_url_label"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@id/artist_url_label"
+        android:id="@+id/artist_listeners_label"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/artistListenersLabel"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/artist_listeners"
+        android:layout_width="wrap_content"
+        android:layout_alignBaseline="@+id/artist_listeners_label"
+        android:layout_toEndOf="@+id/artist_listeners_label"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
