@@ -76,7 +76,7 @@ public class SearchActivity extends BaseActivity<SearchViewModel, SearchComponen
         disposable.add(RxSearchObservable.fromView(searchView)
 
                 .debounce(Constants.SEARCH_DEBOUNCE_TIME, TimeUnit.SECONDS)
-                .filter(text -> !text.isEmpty())    
+                .filter(text -> !text.isEmpty())
                 .distinctUntilChanged()
                 .flatMap(keyword -> viewModel
                         .searchKeyword(keyword)
